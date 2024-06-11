@@ -1,18 +1,19 @@
+import 'dotenv/config';
 import express from 'express';
+import { dbConnect } from './db/config.js';
+import dbSync from './db/init.js';
+import AllRoutes from './router/index.js';
+
 
 const PORT = 3001;
 const app = express();
-
 app.use(express.json());
 
+app.use(AllRoutes);
 
-app.get('/', (req,res) => {
-    try {
-        res.status(200).json({message: "You Successfully setup project"});
-    } catch (error) {
-        res.status(500).json({message: `Internal server error: ${error}`});
-    }
-})
+
+dbConnect();
+dbSync();
 
 app.listen(PORT, ()  => {
     try {
